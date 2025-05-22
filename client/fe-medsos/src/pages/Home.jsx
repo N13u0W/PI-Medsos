@@ -9,7 +9,7 @@ const Home = () => {
     useEffect(() => dispatch(fetchProfile(profile?.token)), [])
 
     return (
-        <div>Home</div>
+        <div>home</div>
     )
 }
 
