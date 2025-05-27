@@ -1,4 +1,5 @@
 import {
+    Alert,
     Box,
     Button,
     FormControl,
@@ -13,18 +14,22 @@ import {
 import CssBaseline from '@mui/material/CssBaseline'
 import { Link } from "react-router-dom"
 import { CardRegister, SignInContainer } from "../utils/style"
-import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
+import { useForm } from 'react-hook-form'
 import { useEffect } from 'react'
 import { fetchMajor } from '../redux/action/majorAction'
+import { authRegister } from '../redux/action/authAction'
 
 const Register = () => {
     const { register, handleSubmit } = useForm()
-    const onSubmit = (value) => console.log(value)
-    const major = useSelector(root => root?.major)
     const dispatch = useDispatch()
-
+    const { auth } = useSelector(root => root)
+    const major = useSelector(root => root?.major)
     useEffect(() => dispatch(fetchMajor()), [])
+
+    const onSubmit = (value) => console(authRegister(value))
+
+    console.log(auth)
 
     return (<>
         <CssBaseline enableColorScheme />
@@ -37,6 +42,11 @@ const Register = () => {
                 >
                     Sign Up
                 </Typography>
+                {
+                    auth?.message !== "" && <Alert severity="success">
+                        {auth?.message}
+                    </Alert>
+                }
                 <Box
                     component="form"
                     onSubmit={handleSubmit(onSubmit)}
@@ -186,6 +196,20 @@ const Register = () => {
                             Have account?
                         </Link>
                     </center>
+                    {
+                        !!auth?.err&&
+                        !!auth?.err?.errors&&
+                        auth?.err?.errors?.map((e, i) => (
+                            <Typography
+                            key={i}
+                            variant="body2"
+                            color="error"
+                            sx={{ textAlign: 'center'}}
+                            >
+                                {e?.path} {e?.msg}
+                            </Typography>
+                        ))
+                    }
                 </Box>
             </CardRegister>
         </SignInContainer>

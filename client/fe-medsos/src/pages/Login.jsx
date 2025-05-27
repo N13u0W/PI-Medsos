@@ -2,9 +2,19 @@ import { Box, Button, FormControl, FormLabel, TextField, Typography } from '@mui
 import CssBaseline from '@mui/material/CssBaseline'
 import { Link } from "react-router-dom"
 import { Card, SignInContainer } from "../utils/style"
+import { useForm } from 'react-hook-form'
+import { authRegister } from '../redux/action/authAction'
+import { useDispatch, useSelector } from 'react-redux'
 
 
 const Login = () => {
+        const { register, handleSubmit } = useForm()
+        const { auth } = useSelector(root => root)
+        const dispatch = useDispatch    ()
+
+        const onSubmit= (value) => dispatch[authRegister(value)]
+
+
 
     return (
         <>
@@ -43,6 +53,7 @@ const Login = () => {
                                 required
                                 fullWidth
                                 variant="outlined"
+                                 {...register('username')}
                             // color={emailError ? 'error' : 'primary'}
                             />
                         </FormControl>
@@ -60,6 +71,8 @@ const Login = () => {
                                 required
                                 fullWidth
                                 variant="outlined"
+                                {...register('password')}
+
                             // color={passwordError ? 'error' : 'primary'}
                             />
                         </FormControl>
@@ -72,10 +85,25 @@ const Login = () => {
                             Sign in
                         </Button>
                         <center>
+                           {
+                        !!auth?.err&&
+                        !!auth?.err?.errors&&
+                        auth?.err?.errors?.map((e, i) => (
+                            <Typography
+                            key={i}
+                            variant="body2"
+                            color="error"
+                            sx={{ textAlign: 'center'}}
+                            >
+                                {e?.path} {e?.msg}
+                            </Typography>
+                        ))
+                    }
                             <Link to={"/register"}>
                                 Register here
                             </Link>
                         </center>
+                        
                     </Box>
                 </Card>
             </SignInContainer>
