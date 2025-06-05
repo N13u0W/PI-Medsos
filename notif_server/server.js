@@ -10,7 +10,9 @@ const server = http.createServer(app)
 const wss = new WebSocket.Server({ server })
 const hostname = "127.0.0.1"
 const corsOption = {
-    origin: ["http://127.0.0.1:5500"]
+    origin: ["http://127.0.0.1:5500",
+        "http://127.0.0.1:3001"
+    ]
 }
 
 app.use(cors(corsOption))
