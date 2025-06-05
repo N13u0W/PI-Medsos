@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchProfile } from '../redux/action/authAction'
 import { VscAccount } from 'react-icons/vsc';
 import { Home as HomeIcon, User, Search, MessageCircle, Settings, Heart } from 'lucide-react';
+import useWebSocket from '../hook/useWebSocket';
 
 const WEBSOCKET_URL = 'ws://127.0.0.1:3001';
 
@@ -11,7 +12,11 @@ const Home = () => {
   const dispatch = useDispatch()
   const  [isConnected, setIsConnected] = useState(false)
   const [websocket, setWebsocket] = useState(null)
-  const ws = useRef(null)
+
+  const {isConnected, lastMessage, error, sendMessage, wsInstance} = useWebSocket (WEBSOCKET_URL, {
+    
+  })
+  // const ws = useRef(null)
   
   useEffect(() =>{
     dispatch(fetchProfile(profile?.token))
